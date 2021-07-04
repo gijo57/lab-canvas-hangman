@@ -23,7 +23,6 @@ class Hangman {
     if (this.secretWord.includes(letter)) {
       this.guessedLetters = this.guessedLetters.concat(letter);
     }
-    this.checkWinner();
   }
 
   addWrongLetter(letter) {
@@ -60,8 +59,9 @@ if (startGameButton) {
     ]);
 
     hangman.secretWord = hangman.pickWord();
+    console.log(hangman.secretWord);
     hangmanCanvas = new HangmanCanvas(hangman.secretWord);
-    hangmanCanvas.drawLines();
+    hangmanCanvas.createBoard();
   });
 }
 
@@ -73,7 +73,22 @@ document.addEventListener('keydown', (event) => {
     hangman.addCorrectLetter(key) || hangman.addWrongLetter(key);
     hangman.checkGameOver();
   }
+  if (hangman.secretWord.includes(key)) {
+    hangman.secretWord.split('').forEach((char, i) => {
+      if (char === key) {
+        hangmanCanvas.writeCorrectLetter(i);
+      }
+    });
+  }
+
   hangmanCanvas.writeWrongLetter(
-    hangman.letters.filter((l) => !hangman.guessedLetters.split('').includes(l))
+    hangman.letters.filter(
+      (l) => !hangman.guessedLetters.split('').includes(l)
+    ),
+    hangman.errorsLeft
   );
+
+  if (hangman.checkWinner()) {
+    hangmanCanvas.winner();
+  }
 });
