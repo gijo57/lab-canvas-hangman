@@ -93,5 +93,7 @@ document.addEventListener('keydown', (event) => {
     if (hangman.checkWinner()) {
       hangmanCanvas.winner();
     }
+
+    hangmanCanvas.drawHangman(hangman.errorsLeft);
   }
 });
