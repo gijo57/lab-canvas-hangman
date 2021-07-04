@@ -1,11 +1,17 @@
+const gameOverImg = new Image();
+gameOverImg.src = './images/gameover.png';
+const winnerImg = new Image();
+winnerImg.src = './images/awesome.png';
+
 class HangmanCanvas {
   constructor(secretWord) {
-    this.context = document.getElementById('hangman').getContext('2d');
+    this.canvas = document.getElementById('hangman');
+    this.context = this.canvas.getContext('2d');
     this.secretWord = secretWord;
   }
 
   createBoard() {
-    this.context.clearRect(0, 0, 800, 1200);
+    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.drawLines();
   }
 
@@ -31,21 +37,23 @@ class HangmanCanvas {
   writeWrongLetter(letters, errorsLeft) {
     if (errorsLeft < 0) {
       this.gameOver();
+    } else {
+      this.context.font = '30px sans-serif';
+      letters.forEach((letter, i) =>
+        this.context.fillText(letter.toUpperCase(), 600 + i * 40, 100)
+      );
     }
-
-    this.context.font = '30px sans-serif';
-    letters.forEach((letter, i) =>
-      this.context.fillText(letter.toUpperCase(), 600 + i * 40, 100)
-    );
   }
 
   drawHangman(errorsLeft) {}
 
   gameOver() {
-    console.log('you lost');
+    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    this.context.drawImage(gameOverImg, 300, 250);
   }
 
   winner() {
-    console.log('you won');
+    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    this.context.drawImage(winnerImg, 150, 100);
   }
 }

@@ -68,27 +68,30 @@ if (startGameButton) {
 document.addEventListener('keydown', (event) => {
   const key = event.key;
 
-  if (hangman.checkIfLetter(key) && !hangman.checkClickedLetters(key)) {
-    hangman.letters.push(key);
-    hangman.addCorrectLetter(key) || hangman.addWrongLetter(key);
-    hangman.checkGameOver();
-  }
-  if (hangman.secretWord.includes(key)) {
-    hangman.secretWord.split('').forEach((char, i) => {
-      if (char === key) {
-        hangmanCanvas.writeCorrectLetter(i);
-      }
-    });
-  }
+  if (hangman.checkIfLetter(key)) {
+    if (!hangman.checkClickedLetters(key)) {
+      hangman.letters.push(key);
+      hangman.addCorrectLetter(key) || hangman.addWrongLetter(key);
+      hangman.checkGameOver();
+    }
 
-  hangmanCanvas.writeWrongLetter(
-    hangman.letters.filter(
-      (l) => !hangman.guessedLetters.split('').includes(l)
-    ),
-    hangman.errorsLeft
-  );
+    if (hangman.secretWord.includes(key)) {
+      hangman.secretWord.split('').forEach((char, i) => {
+        if (char === key) {
+          hangmanCanvas.writeCorrectLetter(i);
+        }
+      });
+    }
 
-  if (hangman.checkWinner()) {
-    hangmanCanvas.winner();
+    hangmanCanvas.writeWrongLetter(
+      hangman.letters.filter(
+        (l) => !hangman.guessedLetters.split('').includes(l)
+      ),
+      hangman.errorsLeft
+    );
+
+    if (hangman.checkWinner()) {
+      hangmanCanvas.winner();
+    }
   }
 });
