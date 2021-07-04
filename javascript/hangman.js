@@ -61,8 +61,7 @@ if (startGameButton) {
 
     hangman.secretWord = hangman.pickWord();
     hangmanCanvas = new HangmanCanvas(hangman.secretWord);
-
-    // ... your code goes here
+    hangmanCanvas.drawLines();
   });
 }
 
@@ -74,5 +73,7 @@ document.addEventListener('keydown', (event) => {
     hangman.addCorrectLetter(key) || hangman.addWrongLetter(key);
     hangman.checkGameOver();
   }
-  console.log(hangman.secretWord, hangman.errorsLeft);
+  hangmanCanvas.writeWrongLetter(
+    hangman.letters.filter((l) => !hangman.guessedLetters.split('').includes(l))
+  );
 });
